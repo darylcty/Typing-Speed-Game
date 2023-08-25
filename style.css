@@ -24,7 +24,10 @@ a:hover {
 }
 
 body {
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   margin: 0;
   display: flex;
   place-items: center;
@@ -43,7 +46,26 @@ h1 {
   padding: 2rem;
   text-align: center;
 }
+#play-area {
+  background-color: grey;
+  width: 800px;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 0 20px 0 20px;
 
+}
+
+#text {
+  font-size: 20px;
+  text-align: justify;
+  padding: 0 5px 0 5px;
+}
+
+.text-field {
+border: 2px solid lightgrey;
+border-radius: 8px;
+padding: 5px
+}
 .logo {
   height: 6em;
   padding: 1.5em;
