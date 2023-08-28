@@ -5,8 +5,10 @@ const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
 const resetButton = document.querySelector("#reset");
 
+let typedCharactersIndex = 0;
+
+//* storing exercpts for use -> exercpts taken from https://www.bookbrowse.com/search/index.cfm
 const excerpts = [
-  //* storing exercpts for use -> exercpts taken from https://www.bookbrowse.com/search/index.cfm
   "Nearly ten years had passed since the Dursleys had woken up to find their nephew on the front step, but Privet Drive had hardly changed at all. The sun rose on the same tidy front gardens and lit up the brass number four on the Dursleys' front door; it crept into their living room, which was almost exactly the same as it had been on the night when Mr. Dursley had seen that fateful news report about the owls. Only the photographs on the mantelpiece really showed how much time had passed. Ten years ago, there had been lots of pictures of what looked like a large pink beach ball wearing different-colored bonnets - but Dudley Dursley was no longer a baby, and now the photographs showed a large blond boy riding his first bicycle, on a carousel at the fair, playing a computer game with his father, being hugged and kissed by his mother. The room held no sign at all that another boy lived in the house, too.",
   "Dudley's birthday - how could he have forgotten? Harry got slowly out of bed and started looking for socks. He found a pair under his bed and, after pulling a spider off one of them, put them on. Harry was used to spiders, because the cupboard under the stairs was full of them, and that was where he slept.",
   "Perhaps it had something to do with living in a dark cupboard, but Harry had always been small and skinny for his age. He looked even smaller and skinnier than he really was because all he had to wear were old clothes of Dudley's, and Dudley was about four times bigger than he was. Harry had a thin face, knobbly knees, black hair, and bright green eyes. He wore round glasses held together with a lot of Scotch tape because of all the times Dudley had punched him on the nose. The only thing Harry liked about his own appearance was a very thin scar on his forehead that was shaped like a bolt of lightning. He had had it as long as he could remember, and the first question he could ever remember asking his Aunt Petunia was how he had gotten it.",
@@ -38,7 +40,7 @@ function chooseRandomExcerpt() {
   // console.log(browserTextField);
 }
 
-function playerInput() {
+function focusToInput() {
   //* allow player to input characters when typing or clicking on excerpt -> code inspired from https://www.youtube.com/watch?v=xww779jG7Hk&t=150s
   document.addEventListener("keydown", () => browserInputField.focus());
   // document.addEventListener("click", () => browserInputField.focus());
@@ -49,34 +51,49 @@ function playerTyping() {
   const textCharacters = browserTextField.querySelectorAll("span");
 
   //* define what player typed with a variable to get the first letter of the string, string[0]
-  const typedCharacters = browserInputField.value;
+  const typedInput = browserInputField.value;
 
-  //* split player's string into individual characters
-  let typedCharactersIndex = 0;
-  let splitTypedCharacters = typedCharacters.split("")[typedCharactersIndex];
-  if (typedCharacters[typedCharactersIndex] === textCharacters) {
-    console.log("correct");
-    typedCharactersIndex++;
+  //* initializing the current & next span of the text
+  const currentSpan = textCharacters[typedCharactersIndex];
+  const nextSpan = textCharacters[typedCharactersIndex + 1];
+  const prevSpan = textCharacters[typedCharactersIndex - 1];
+
+  //* if typed character is same as text character, add 'correct' class to span. otherwise,
+  //* add 'wrong' class to span.
+  if (
+    typedInput[typedCharactersIndex] ===
+    textCharacters[typedCharactersIndex].textContent
+  ) {
+    currentSpan.classList.add("correct");
   } else {
-    console.log("wrong");
+    currentSpan.classList.add("wrong");
   }
-  // console.log(splitPlayerTyped);
+  typedCharactersIndex++;
+
+  //* making a 'current letter' indicator
+  currentSpan.classList.remove("current");
+  nextSpan.classList.add("current");
+
+  //* creating backspace function
+  //   const backSpace = document.getElementById("playerBackSpace");
+  //   backSpace.document.addEventListener("keydown", function (event) {
+  //     const keyID = event.key;
+  //     if (keyID === "Backspace") {
+  //     typedCharactersIndex--;
+  //     currentSpan.classList.remove("correct", "wrong", "current");
+  //     console.log(keyID);
+  //     } else {
+  //       prevSpan.classList.add("current");
+  //     }
+  //   });
 }
 
 //* function execution
 chooseRandomExcerpt();
-playerInput();
+focusToInput();
 browserInputField.addEventListener("input", playerTyping);
 
-// indicate flashing cursor
-
 // backspace, cancel last entry
-
-// check if characters are the same as excerpt
-
-// if correct
-
-// if wrong & mistake counter
 
 // set up timer
 
