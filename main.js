@@ -1,7 +1,9 @@
-import "./style.css";
+// import "./style.css";
 
 // declaring dom variables
-const type = document.querySelector(".text-field");
+const browserTextField = document.querySelector(".text-field p");
+const browserInputField = document.querySelector("#input-field");
+const resetButton = document.querySelector("#reset");
 
 //storing exercpts for use < exercpts taken from https://www.bookbrowse.com/search/index.cfm
 const excerpts = [
@@ -14,14 +16,31 @@ const excerpts = [
   "The villagers of Little Hangleton still called it 'the Riddle House,' even though it had been many years since the Riddle family had lived there. It stood on a hill overlooking the village, some of its windows boarded, tiles missing from its roof, and ivy spreading unchecked over its face. Once a fine-looking manor, and easily the largest and grandest building for miles around, the Riddle House was now damp, derelict, and unoccupied.",
 ];
 
-// call out a random exercpt
-function randomExercpt() {
+// preparing a random exercpt
+function chooseRandomExercpt() {
   const randomExercptIndex = Math.floor(Math.random() * excerpts.length);
 
   // split exercpt string into individual characters
+  characters = excerpts[randomExercptIndex].split("");
+
+  // add span tags to each character, used later to compare input & text
+  const spanWrappedCharacters = characters.map(
+    (char) => `<span>${char}</span>`
+  );
+
+  //join spanWrappedCharacters to remove "," from the string
+  const joinedSpanWrappedExcerpt = spanWrappedCharacters.join("");
+
+  browserTextField.innerHTML = joinedSpanWrappedExcerpt;
+
+  // console.log(randomExercptIndex);
+  // console.log(joinedSpanWrappedExcerpt);
+  console.log(browserTextField);
 
   // test to see if new excerpt is selected every refresh
 }
+
+chooseRandomExercpt();
 
 // allow player to input characters
 
