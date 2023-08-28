@@ -1,12 +1,12 @@
 // import "./style.css";
 
-// declaring dom variables
+//* declaring dom variables
 const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
 const resetButton = document.querySelector("#reset");
 
-//storing exercpts for use < exercpts taken from https://www.bookbrowse.com/search/index.cfm
 const excerpts = [
+  //* storing exercpts for use -> exercpts taken from https://www.bookbrowse.com/search/index.cfm
   "Nearly ten years had passed since the Dursleys had woken up to find their nephew on the front step, but Privet Drive had hardly changed at all. The sun rose on the same tidy front gardens and lit up the brass number four on the Dursleys' front door; it crept into their living room, which was almost exactly the same as it had been on the night when Mr. Dursley had seen that fateful news report about the owls. Only the photographs on the mantelpiece really showed how much time had passed. Ten years ago, there had been lots of pictures of what looked like a large pink beach ball wearing different-colored bonnets - but Dudley Dursley was no longer a baby, and now the photographs showed a large blond boy riding his first bicycle, on a carousel at the fair, playing a computer game with his father, being hugged and kissed by his mother. The room held no sign at all that another boy lived in the house, too.",
   "Dudley's birthday - how could he have forgotten? Harry got slowly out of bed and started looking for socks. He found a pair under his bed and, after pulling a spider off one of them, put them on. Harry was used to spiders, because the cupboard under the stairs was full of them, and that was where he slept.",
   "Perhaps it had something to do with living in a dark cupboard, but Harry had always been small and skinny for his age. He looked even smaller and skinnier than he really was because all he had to wear were old clothes of Dudley's, and Dudley was about four times bigger than he was. Harry had a thin face, knobbly knees, black hair, and bright green eyes. He wore round glasses held together with a lot of Scotch tape because of all the times Dudley had punched him on the nose. The only thing Harry liked about his own appearance was a very thin scar on his forehead that was shaped like a bolt of lightning. He had had it as long as he could remember, and the first question he could ever remember asking his Aunt Petunia was how he had gotten it.",
@@ -16,33 +16,57 @@ const excerpts = [
   "The villagers of Little Hangleton still called it 'the Riddle House,' even though it had been many years since the Riddle family had lived there. It stood on a hill overlooking the village, some of its windows boarded, tiles missing from its roof, and ivy spreading unchecked over its face. Once a fine-looking manor, and easily the largest and grandest building for miles around, the Riddle House was now damp, derelict, and unoccupied.",
 ];
 
-// preparing a random exercpt
-function chooseRandomExercpt() {
+function chooseRandomExcerpt() {
+  //* preparing a random exercpt by choosing a random index
   const randomExercptIndex = Math.floor(Math.random() * excerpts.length);
 
-  // split exercpt string into individual characters
-  characters = excerpts[randomExercptIndex].split("");
+  //* split exercpt string into individual characters
+  indiChar = excerpts[randomExercptIndex].split("");
 
-  // add span tags to each character, used later to compare input & text
-  const spanWrappedCharacters = characters.map(
-    (char) => `<span>${char}</span>`
-  );
+  //* add span tags to each individual character using `template literals`, used later to compare input & text
+  const spanWrappedCharacters = indiChar.map((char) => `<span>${char}</span>`);
 
-  //join spanWrappedCharacters to remove "," from the string
+  //* join spanWrappedCharacters to remove "," from the string
   const joinedSpanWrappedExcerpt = spanWrappedCharacters.join("");
 
+  //* replacing text in html to joinedSpanWrappedExcerpt
   browserTextField.innerHTML = joinedSpanWrappedExcerpt;
 
+  //? test to see if new excerpt is selected every refresh
   // console.log(randomExercptIndex);
   // console.log(joinedSpanWrappedExcerpt);
-  console.log(browserTextField);
-
-  // test to see if new excerpt is selected every refresh
+  // console.log(browserTextField);
 }
 
-chooseRandomExercpt();
+function playerInput() {
+  //* allow player to input characters when typing or clicking on excerpt -> code inspired from https://www.youtube.com/watch?v=xww779jG7Hk&t=150s
+  document.addEventListener("keydown", () => browserInputField.focus());
+  // document.addEventListener("click", () => browserInputField.focus());
+}
 
-// allow player to input characters
+function playerTyping() {
+  //* creating a function that compares input with text
+  const textCharacters = browserTextField.querySelectorAll("span");
+
+  //* define what player typed with a variable to get the first letter of the string, string[0]
+  const typedCharacters = browserInputField.value;
+
+  //* split player's string into individual characters
+  let typedCharactersIndex = 0;
+  let splitTypedCharacters = typedCharacters.split("")[typedCharactersIndex];
+  if (typedCharacters[typedCharactersIndex] === textCharacters) {
+    console.log("correct");
+    typedCharactersIndex++;
+  } else {
+    console.log("wrong");
+  }
+  // console.log(splitPlayerTyped);
+}
+
+//* function execution
+chooseRandomExcerpt();
+playerInput();
+browserInputField.addEventListener("input", playerTyping);
 
 // indicate flashing cursor
 
@@ -53,8 +77,6 @@ chooseRandomExercpt();
 // if correct
 
 // if wrong & mistake counter
-
-// dom manipulation
 
 // set up timer
 
