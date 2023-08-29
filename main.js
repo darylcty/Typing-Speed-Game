@@ -4,8 +4,13 @@
 const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
 const resetButton = document.querySelector("#reset");
+const backspace = document.getElementById("playerBackSpace");
+const mistake = document.querySelector("#mistakeCounter");
+const timer = document.querySelector("#coundDown");
 
 let typedCharactersIndex = 0;
+let mistakeCount = 0;
+let startTime = 60;
 
 //* storing exercpts for use -> exercpts taken from https://www.bookbrowse.com/search/index.cfm
 const excerpts = [
@@ -43,7 +48,7 @@ function chooseRandomExcerpt() {
 function focusToInput() {
   //* allow player to input characters when typing or clicking on excerpt -> code inspired from https://www.youtube.com/watch?v=xww779jG7Hk&t=150s
   document.addEventListener("keydown", () => browserInputField.focus());
-  // document.addEventListener("click", () => browserInputField.focus());
+  document.addEventListener("click", () => browserInputField.focus());
 }
 
 function playerTyping() {
@@ -56,44 +61,45 @@ function playerTyping() {
   //* initializing the current & next span of the text
   const currentSpan = textCharacters[typedCharactersIndex];
   const nextSpan = textCharacters[typedCharactersIndex + 1];
-  const prevSpan = textCharacters[typedCharactersIndex - 1];
+
+  //! backspace, cancel last entry
+  //!document.addEventListener("keydown", function (event) {
+  //!   const keyPress = event.key;
+
+  //!   if (keyPress === "Backspace" && typedCharactersIndex > 0) {
+  //!     typedCharactersIndex--;
+  //!     currentSpan.classList.remove("correct", "wrong", "current");
+  //!     mistakeCount--;
+  //!   } else
 
   //* if typed character is same as text character, add 'correct' class to span. otherwise,
-  //* add 'wrong' class to span.
+  //* add 'wrong' class to span and increase mistake counter by 1
   if (
     typedInput[typedCharactersIndex] ===
     textCharacters[typedCharactersIndex].textContent
   ) {
     currentSpan.classList.add("correct");
+    typedCharactersIndex++;
   } else {
     currentSpan.classList.add("wrong");
+    typedCharactersIndex++;
+    mistakeCount++;
   }
-  typedCharactersIndex++;
 
   //* making a 'current letter' indicator
   currentSpan.classList.remove("current");
   nextSpan.classList.add("current");
 
-  //* creating backspace function
-  //   const backSpace = document.getElementById("playerBackSpace");
-  //   backSpace.document.addEventListener("keydown", function (event) {
-  //     const keyID = event.key;
-  //     if (keyID === "Backspace") {
-  //     typedCharactersIndex--;
-  //     currentSpan.classList.remove("correct", "wrong", "current");
-  //     console.log(keyID);
-  //     } else {
-  //       prevSpan.classList.add("current");
-  //     }
-  //   });
+  //* setting up the mistake counter
+  mistake.innerText = mistakeCount;
+
+  //* setting up timer as soon as player types
 }
 
 //* function execution
 chooseRandomExcerpt();
 focusToInput();
 browserInputField.addEventListener("input", playerTyping);
-
-// backspace, cancel last entry
 
 // set up timer
 
