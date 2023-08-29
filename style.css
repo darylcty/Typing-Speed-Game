@@ -141,6 +141,11 @@ h1 {
   font-weight: 800;
 }
 
+.accuracy {
+  border-bottom: 5px solid lightgrey;
+  font-weight: 800;
+}
+
 .time {
   font-weight: 800;
 }

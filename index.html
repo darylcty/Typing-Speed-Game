@@ -21,7 +21,7 @@
         <p></p>
       </div>    
       <div>
-        <button id="reset">Retry</button>
+        <button id="reset" onclick="window.location.reload();">Retry</button>
       </div>
     </section>
     <section id="statistics">
@@ -37,6 +37,10 @@
         <li class="mistakes">
           <p>Mistakes</p>
           <p id="mistakeCounter">0</p>
+        </li>
+        <li class="accuracy">
+          <p>Accuracy</p>
+          <p id="accuracyPercentage">0%</p>
         </li>
         <li class="time">
           <p>Time Left</p>
