@@ -4,8 +4,10 @@
 const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
 const resetButton = document.querySelector("#reset");
-
-let typedCharactersIndex = 0;
+const backspace = document.getElementById("playerBackSpace");
+const mistake = document.querySelector("#mistakeCounter");
+const acc = document.querySelector("#accuracyPercentage");
+const domTimer = document.querySelector("#countDown");
 
 //* storing exercpts for use -> exercpts taken from https://www.bookbrowse.com/search/index.cfm
 const excerpts = [
@@ -18,87 +20,127 @@ const excerpts = [
   "The villagers of Little Hangleton still called it 'the Riddle House,' even though it had been many years since the Riddle family had lived there. It stood on a hill overlooking the village, some of its windows boarded, tiles missing from its roof, and ivy spreading unchecked over its face. Once a fine-looking manor, and easily the largest and grandest building for miles around, the Riddle House was now damp, derelict, and unoccupied.",
 ];
 
-function chooseRandomExcerpt() {
-  //* preparing a random exercpt by choosing a random index
-  const randomExercptIndex = Math.floor(Math.random() * excerpts.length);
+let typedCharactersIndex = 0;
 
-  //* split exercpt string into individual characters
-  indiChar = excerpts[randomExercptIndex].split("");
+function main() {
+  let numOfChars;
+  let mistakeCount = 0;
+  let totalTime = 60;
+  let gameTime = 60;
+  let activeTyping = 0;
+  let timerInterval;
 
-  //* add span tags to each individual character using `template literals`, used later to compare input & text
-  const spanWrappedCharacters = indiChar.map((char) => `<span>${char}</span>`);
+  function chooseRandomExcerpt() {
+    //* preparing a random exercpt by choosing a random index
+    const randomExercptIndex = Math.floor(Math.random() * excerpts.length);
 
-  //* join spanWrappedCharacters to remove "," from the string
-  const joinedSpanWrappedExcerpt = spanWrappedCharacters.join("");
+    //* split exercpt string into individual characters
+    indiChar = excerpts[randomExercptIndex].split("");
 
-  //* replacing text in html to joinedSpanWrappedExcerpt
-  browserTextField.innerHTML = joinedSpanWrappedExcerpt;
+    //* add span tags to each individual character using `template literals`, used later to compare input & text
+    const spanWrappedCharacters = indiChar.map(
+      (char) => `<span>${char}</span>`
+    );
 
-  //? test to see if new excerpt is selected every refresh
-  // console.log(randomExercptIndex);
-  // console.log(joinedSpanWrappedExcerpt);
-  // console.log(browserTextField);
+    //* join spanWrappedCharacters to remove "," from the string
+    const joinedSpanWrappedExcerpt = spanWrappedCharacters.join("");
+
+    //* replacing text in html to joinedSpanWrappedExcerpt
+    browserTextField.innerHTML = joinedSpanWrappedExcerpt;
+
+    //* get the total number of chars in the excerpt for calculation use later
+    numOfChars = spanWrappedCharacters.length;
+    return numOfChars;
+
+    //? test to see if new excerpt is selected every refresh
+    // console.log(randomExercptIndex);
+    // console.log(joinedSpanWrappedExcerpt);
+    // console.log(browserTextField);
+  }
+
+  function playerTyping() {
+    //* when player types, change state to activate timer
+    if (!activeTyping) {
+      timerInterval = setInterval(timerCountDown, 1000);
+      activeTyping = 1;
+      return timerInterval;
+    }
+    //* creating a function that compares input with text
+    const textCharacters = browserTextField.querySelectorAll("span");
+
+    //* define what player typed with a variable to get the first letter of the string, string[0]
+    const typedInput = browserInputField.value;
+
+    //* initializing the current & next span of the text
+    const currentSpan = textCharacters[typedCharactersIndex];
+    const nextSpan = textCharacters[typedCharactersIndex + 1];
+
+    //! backspace, cancel last entry
+    //!document.addEventListener("keydown", function (event) {
+    //!   const keyPress = event.key;
+
+    //!   if (keyPress === "Backspace" && typedCharactersIndex > 0) {
+    //!     typedCharactersIndex--;
+    //!     currentSpan.classList.remove("correct", "wrong", "current");
+    //!     mistakeCount--;
+    //!   } else
+
+    //* if typed character is same as text character, add 'correct' class to span. otherwise,
+    //* add 'wrong' class to span and increase mistake counter by 1
+    if (
+      typedInput[typedCharactersIndex] ===
+      textCharacters[typedCharactersIndex].textContent
+    ) {
+      currentSpan.classList.add("correct");
+      typedCharactersIndex++;
+    } else {
+      currentSpan.classList.add("wrong");
+      typedCharactersIndex++;
+      mistakeCount++;
+    }
+
+    //* making a 'current letter' indicator
+    currentSpan.classList.remove("current");
+    nextSpan.classList.add("current");
+
+    //* setting up the mistake counter
+    mistake.innerText = mistakeCount;
+
+    //* calculating accuracy
+    let accuracyCal = 100 - (mistakeCount / numOfChars) * 100;
+    let accuracyRounded = accuracyCal.toFixed(2);
+    accuracyPercentage.innerText = accuracyRounded + "%";
+  }
+
+  //* setting up timer as soon as player types and r
+  function timerCountDown() {
+    if (gameTime > 0) {
+      gameTime--;
+      domTimer.innerText = gameTime;
+    } else {
+      clearInterval(timerInterval);
+      alert("GGWP, click 'OK' and 'Retry' to play again!");
+      return 0;
+    }
+  }
+
+  chooseRandomExcerpt();
+  browserInputField.addEventListener("input", playerTyping);
+  // timerCountDown();
 }
 
 function focusToInput() {
   //* allow player to input characters when typing or clicking on excerpt -> code inspired from https://www.youtube.com/watch?v=xww779jG7Hk&t=150s
   document.addEventListener("keydown", () => browserInputField.focus());
-  // document.addEventListener("click", () => browserInputField.focus());
-}
-
-function playerTyping() {
-  //* creating a function that compares input with text
-  const textCharacters = browserTextField.querySelectorAll("span");
-
-  //* define what player typed with a variable to get the first letter of the string, string[0]
-  const typedInput = browserInputField.value;
-
-  //* initializing the current & next span of the text
-  const currentSpan = textCharacters[typedCharactersIndex];
-  const nextSpan = textCharacters[typedCharactersIndex + 1];
-  const prevSpan = textCharacters[typedCharactersIndex - 1];
-
-  //* if typed character is same as text character, add 'correct' class to span. otherwise,
-  //* add 'wrong' class to span.
-  if (
-    typedInput[typedCharactersIndex] ===
-    textCharacters[typedCharactersIndex].textContent
-  ) {
-    currentSpan.classList.add("correct");
-  } else {
-    currentSpan.classList.add("wrong");
-  }
-  typedCharactersIndex++;
-
-  //* making a 'current letter' indicator
-  currentSpan.classList.remove("current");
-  nextSpan.classList.add("current");
-
-  //* creating backspace function
-  //   const backSpace = document.getElementById("playerBackSpace");
-  //   backSpace.document.addEventListener("keydown", function (event) {
-  //     const keyID = event.key;
-  //     if (keyID === "Backspace") {
-  //     typedCharactersIndex--;
-  //     currentSpan.classList.remove("correct", "wrong", "current");
-  //     console.log(keyID);
-  //     } else {
-  //       prevSpan.classList.add("current");
-  //     }
-  //   });
+  document.addEventListener("click", () => browserInputField.focus());
 }
 
 //* function execution
-chooseRandomExcerpt();
+main();
 focusToInput();
-browserInputField.addEventListener("input", playerTyping);
-
-// backspace, cancel last entry
 
 // set up timer
 
 // set up wpm
 
 // set up cpm
-
-//highlight green is entry is correct and red if entry is wrong

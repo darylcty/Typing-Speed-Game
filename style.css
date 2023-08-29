@@ -40,6 +40,7 @@ h1 {
 #play-area {
   font-size: 2.5em;
   background-color: grey;
+  word-break: break-all;
   width: auto;
   border-radius: 8px;
   padding: 0 1.2em 1.2em 1.2em;
@@ -48,16 +49,19 @@ h1 {
 
 #input-field {
   height: auto;
-  width: auto;
-  font-size: auto;  
+  width: 51em;
+  font-size: 25px;
+  background-color: lightgoldenrodyellow;
+  color: black;
 }
 
 .text-field {
-  border: 2px solid lightgrey;
+  border: 2px solid lightcyan;
   text-align: justify;
   border-radius: 8px;
   padding: 0 1em 0 1em;
   color: rgb(59, 59, 59);
+  letter-spacing: 5px;
 }
 
 .text-field span {
@@ -73,6 +77,7 @@ h1 {
   background: pink;
   outline: 0.5px solid pink;
   border-radius: 10%;
+  
 }
 
 .text-field span.current {
@@ -82,6 +87,7 @@ h1 {
 }
 /* code inspired by https://www.youtube.com/watch?v=Hg80AjDNnJk */
 .text-field span.current::before {
+  text-align: center;
   content: '';
   width: 100%;
   height: 100%;
@@ -131,6 +137,11 @@ h1 {
 }
 
 .mistakes {
+  border-bottom: 5px solid lightgrey;
+  font-weight: 800;
+}
+
+.accuracy {
   border-bottom: 5px solid lightgrey;
   font-weight: 800;
 }
