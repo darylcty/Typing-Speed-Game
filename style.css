@@ -13,84 +13,140 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
-  min-height: 100vh;
+  margin: 0;
+  place-items: center;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 6em;
   line-height: 1.1;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+#intro {
+  flex-wrap: wrap;
 }
+
+#start {
+  font-weight: 550;
+  margin: 0.5em 0 -0.5em 0;
+}
+
 #play-area {
+  font-size: 2.5em;
   background-color: grey;
-  width: 800px;
+  width: auto;
   border-radius: 8px;
-  padding: 20px;
-  margin: 0 20px 0 20px;
-
+  padding: 0 1.2em 1.2em 1.2em;
+  margin: 0 1.2em 0 1.2em;
 }
 
-#text {
-  font-size: 20px;
-  text-align: justify;
-  padding: 0 5px 0 5px;
+#input-field {
+  height: auto;
+  width: auto;
+  font-size: auto;  
 }
 
 .text-field {
-border: 2px solid lightgrey;
-border-radius: 8px;
-padding: 5px
-}
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #f7df1eaa);
+  border: 2px solid lightgrey;
+  text-align: justify;
+  border-radius: 8px;
+  padding: 0 1em 0 1em;
+  color: rgb(59, 59, 59);
 }
 
-.card {
-  padding: 2em;
+.text-field span {
+  position: relative;
 }
 
-.read-the-docs {
-  color: #888;
+.text-field span.correct {
+  color: rgba(255, 255, 255, 0.87);
 }
+
+.text-field span.wrong {
+  color:red;
+  background: pink;
+  outline: 0.5px solid pink;
+  border-radius: 10%;
+}
+
+.text-field span.current {
+  background: rgb(0, 221, 255);
+  outline: 0.5px solid rgb(0, 221, 255);
+  border-radius: 10%;
+}
+/* code inspired by https://www.youtube.com/watch?v=Hg80AjDNnJk */
+.text-field span.current::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 221, 255, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  animation: blink 0.7s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50%{
+    opacity: 1;
+  }
+}
+
+#stats {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#statistics {
+  font-size: 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: grey;
+  border-radius: 8px;
+  text-align: center;
+  margin: 0 2em 0 0 ;
+  padding: 10px;
+}
+
+.wpm {
+  border-bottom: 5px solid lightgrey;
+  font-weight: 800;
+  
+}
+
+.cpm {
+  border-bottom: 5px solid lightgrey;
+  font-weight: 800;
+}
+
+.mistakes {
+  border-bottom: 5px solid lightgrey;
+  font-weight: 800;
+}
+
+.time {
+  font-weight: 800;
+}
+
+/* vite default css */
 
 button {
+  display: flex;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  margin: 1em 0 0 0;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
