@@ -19,6 +19,10 @@ const excerpts = [
   "The passageway leading to Nearly Headless Nick's party had been lined with candles, too, though the effect was far from cheerful: These were long, thin, jet-black tapers, all burning bright blue, casting a dim, ghostly light even over their own living faces. The temperature dropped with every step they took. As Harry shivered and drew his robes tightly around him, he heard what sounded like a thousand fingernails scraping an enormous blackboard.",
   "But Aunt Marge suddenly stopped speaking. For a moment, it looked as though words had failed her. She seemed to be swelling with inexpressible anger - but the swelling didn't stop. Her great red face started to expand, her tiny eyes bulged, and her mouth stretched too tightly for speech - next second, several buttons had just burst from her tweed jacket and pinged off the walls - she was inflating like a monstrous balloon, her stomach bursting free of her tweed waistband, each of her fingers blowing up like a salami.",
   "The villagers of Little Hangleton still called it 'the Riddle House,' even though it had been many years since the Riddle family had lived there. It stood on a hill overlooking the village, some of its windows boarded, tiles missing from its roof, and ivy spreading unchecked over its face. Once a fine-looking manor, and easily the largest and grandest building for miles around, the Riddle House was now damp, derelict, and unoccupied.",
+  "Harry sat down between Dudley and Uncle Vernon, a large, beefy man with very little neck and a lot of mustache. Far from wishing Harry a happy birthday, none of the Dursleys made any sign that they had noticed Harry enter the room, but Harry was far too used to this to care. He helped himself to a piece of toast and then looked up at the reporter on the television, who was halfway through a report on an escaped convict.",
+  "At Dudley's fifth birthday party, Aunt Marge had whacked Harry around the shins with her walking stick to stop him from beating Dudley at musical statues. A few years later, she had turned up at Christmas with a computerized robot for Dudley and a box of dog biscuits for Harry. On her last visit, the year before Harry started at Hogwarts, Harry had accidentally trodden on the tail of her favorite dog. Ripper had chased Harry out into the garden and up a tree, and Aunt Marge had refused to call him off until past midnight. The memory of this incident still brought tears of laughter to Dudley's eyes.",
+  "The zoo director himself made Aunt Petunia a cup of strong, sweet tea while he apologized over and over again. Piers and Dudley could only gibber. As far as Harry had seen, the snake hadn't done anything except snap playfully at their heels as it passed, but by the time they were all back in Uncle Vernon's car, Dudley was telling them how it had nearly bitten off his leg, while Piers was swearing it had tried to squeeze him to death.",
+  "On the threshold stood Aunt Marge. She was very like Uncle Vernon: large, beefy, and purple-faced, she even had a mustache, though not as bushy as his. In one hand she held an enormous suitcase, and tucked under the other was an old and evil-tempered bulldog.",
 ];
 
 function main() {
@@ -50,7 +54,7 @@ function main() {
     browserTextField.innerHTML = joinedSpanWrappedExcerpt;
 
     //* highlights first letter of excerpt
-    browserTextField.querySelectorAll("span")[0].classList.add("current");
+    browserTextField.querySelectorAll("span")[0].classList.add("next");
 
     //* get the total number of chars in the excerpt for calculation use later
     numOfChars = spanWrappedCharacters.length;
@@ -63,6 +67,7 @@ function main() {
       timerInterval = setInterval(timerCountDown, 1000);
       activeTyping = 1;
     }
+
     //* creating a function that compares input with text
     const textCharacters = browserTextField.querySelectorAll("span");
 
@@ -72,16 +77,6 @@ function main() {
     //* initializing the current & next span of the text
     const currentSpan = textCharacters[typedCharactersIndex];
     const nextSpan = textCharacters[typedCharactersIndex + 1];
-
-    //! backspace, cancel last entry
-    //!document.addEventListener("keydown", function (event) {
-    //!   const keyPress = event.key;
-
-    //!   if (keyPress === "Backspace" && typedCharactersIndex > 0) {
-    //!     typedCharactersIndex--;
-    //!     currentSpan.classList.remove("correct", "wrong", "current");
-    //!     mistakeCount--;
-    //!   } else
 
     //* check if player is at the last character of excerpt
     if (typedCharactersIndex >= textCharacters.length) {
@@ -105,11 +100,11 @@ function main() {
       }
 
       //* making a 'current letter' indicator
-      currentSpan.classList.remove("current");
+      currentSpan.classList.remove("next");
 
       //* check to see if nextSpan exist, if true, add "current" to classList
       if (nextSpan) {
-        nextSpan.classList.add("current");
+        nextSpan.classList.add("next");
       }
 
       //* setting up the mistake counter
@@ -161,9 +156,3 @@ function focusToInput() {
 //* function execution
 main();
 focusToInput();
-
-// set up timer
-
-// set up wpm
-
-// set up cpm

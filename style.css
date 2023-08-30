@@ -13,6 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
 body {
   display: flex;
   align-items: center;
@@ -24,13 +25,10 @@ body {
 }
 
 h1 {
+  font-family: 'Times New Roman', Times, serif;
   font-size: 6em;
   line-height: 1.1;
   margin: 0 0 0 0.5em;
-}
-
-#intro {
-  flex-wrap: wrap;
 }
 
 #start {
@@ -84,13 +82,13 @@ h1 {
   
 }
 
-.text-field span.current {
+.text-field span.next {
   background: rgb(0, 221, 255);
   outline: 0.5px solid rgb(0, 221, 255);
   border-radius: 10%;
 }
 /* code inspired by https://www.youtube.com/watch?v=Hg80AjDNnJk */
-.text-field span.current::before {
+.text-field span.next::before {
   text-align: center;
   content: '';
   width: 100%;
