@@ -3,13 +3,14 @@
 //* declaring dom variables
 const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
-const resetButton = document.querySelector("#reset");
-const backspace = document.getElementById("playerBackSpace");
+//! const backspace = document.getElementById("playerBackSpace");
 const mistake = document.querySelector("#mistakeCounter");
 const acc = document.querySelector("#accuracyPercentage");
 const domTimer = document.querySelector("#countDown");
+const words = document.querySelector("#wpmCounter");
+const char = document.querySelector("#cpmCounter");
 
-//* storing exercpts for use -> exercpts taken from https://www.bookbrowse.com/search/index.cfm
+//* storing excerpts for use -> excerpts taken from https://www.bookbrowse.com/search/index.cfm
 const excerpts = [
   "Nearly ten years had passed since the Dursleys had woken up to find their nephew on the front step, but Privet Drive had hardly changed at all. The sun rose on the same tidy front gardens and lit up the brass number four on the Dursleys' front door; it crept into their living room, which was almost exactly the same as it had been on the night when Mr. Dursley had seen that fateful news report about the owls. Only the photographs on the mantelpiece really showed how much time had passed. Ten years ago, there had been lots of pictures of what looked like a large pink beach ball wearing different-colored bonnets - but Dudley Dursley was no longer a baby, and now the photographs showed a large blond boy riding his first bicycle, on a carousel at the fair, playing a computer game with his father, being hugged and kissed by his mother. The room held no sign at all that another boy lived in the house, too.",
   "Dudley's birthday - how could he have forgotten? Harry got slowly out of bed and started looking for socks. He found a pair under his bed and, after pulling a spider off one of them, put them on. Harry was used to spiders, because the cupboard under the stairs was full of them, and that was where he slept.",
@@ -20,22 +21,22 @@ const excerpts = [
   "The villagers of Little Hangleton still called it 'the Riddle House,' even though it had been many years since the Riddle family had lived there. It stood on a hill overlooking the village, some of its windows boarded, tiles missing from its roof, and ivy spreading unchecked over its face. Once a fine-looking manor, and easily the largest and grandest building for miles around, the Riddle House was now damp, derelict, and unoccupied.",
 ];
 
-let typedCharactersIndex = 0;
-
 function main() {
+  let typedCharactersIndex = 0;
   let numOfChars;
   let mistakeCount = 0;
-  let totalTime = 60;
   let gameTime = 60;
+  let totalTime = 60;
   let activeTyping = 0;
   let timerInterval;
 
   function chooseRandomExcerpt() {
-    //* preparing a random exercpt by choosing a random index
-    const randomExercptIndex = Math.floor(Math.random() * excerpts.length);
+    //* preparing a random excerpt by choosing a random index
+    const randomExcerptIndex = Math.floor(Math.random() * excerpts.length);
+    const excerptSelected = excerpts[randomExcerptIndex];
 
-    //* split exercpt string into individual characters
-    indiChar = excerpts[randomExercptIndex].split("");
+    //* split excerpt string into individual characters
+    indiChar = excerptSelected.split("");
 
     //* add span tags to each individual character using `template literals`, used later to compare input & text
     const spanWrappedCharacters = indiChar.map(
@@ -48,14 +49,12 @@ function main() {
     //* replacing text in html to joinedSpanWrappedExcerpt
     browserTextField.innerHTML = joinedSpanWrappedExcerpt;
 
+    //* highlights first letter of excerpt
+    browserTextField.querySelectorAll("span")[0].classList.add("current");
+
     //* get the total number of chars in the excerpt for calculation use later
     numOfChars = spanWrappedCharacters.length;
     return numOfChars;
-
-    //? test to see if new excerpt is selected every refresh
-    // console.log(randomExercptIndex);
-    // console.log(joinedSpanWrappedExcerpt);
-    // console.log(browserTextField);
   }
 
   function playerTyping() {
@@ -63,7 +62,6 @@ function main() {
     if (!activeTyping) {
       timerInterval = setInterval(timerCountDown, 1000);
       activeTyping = 1;
-      return timerInterval;
     }
     //* creating a function that compares input with text
     const textCharacters = browserTextField.querySelectorAll("span");
@@ -85,48 +83,73 @@ function main() {
     //!     mistakeCount--;
     //!   } else
 
-    //* if typed character is same as text character, add 'correct' class to span. otherwise,
-    //* add 'wrong' class to span and increase mistake counter by 1
-    if (
-      typedInput[typedCharactersIndex] ===
-      textCharacters[typedCharactersIndex].textContent
-    ) {
-      currentSpan.classList.add("correct");
-      typedCharactersIndex++;
-    } else {
-      currentSpan.classList.add("wrong");
-      typedCharactersIndex++;
-      mistakeCount++;
+    //* check if player is at the last character of excerpt
+    if (typedCharactersIndex >= textCharacters.length) {
+      return 0;
     }
 
-    //* making a 'current letter' indicator
-    currentSpan.classList.remove("current");
-    nextSpan.classList.add("current");
+    //* game is playable if enough time and not at end of excerpt
+    if (gameTime > 0 && typedCharactersIndex < textCharacters.length) {
+      //* if typed character is same as text character, add 'correct' class to span. otherwise,
+      //* add 'wrong' class to span and increase mistake counter by 1
+      if (
+        typedInput[typedCharactersIndex] ===
+        textCharacters[typedCharactersIndex].textContent
+      ) {
+        currentSpan.classList.add("correct");
+        typedCharactersIndex++;
+      } else {
+        currentSpan.classList.add("wrong");
+        typedCharactersIndex++;
+        mistakeCount++;
+      }
 
-    //* setting up the mistake counter
-    mistake.innerText = mistakeCount;
+      //* making a 'current letter' indicator
+      currentSpan.classList.remove("current");
 
-    //* calculating accuracy
-    let accuracyCal = 100 - (mistakeCount / numOfChars) * 100;
-    let accuracyRounded = accuracyCal.toFixed(2);
-    accuracyPercentage.innerText = accuracyRounded + "%";
-  }
+      //* check to see if nextSpan exist, if true, add "current" to classList
+      if (nextSpan) {
+        nextSpan.classList.add("current");
+      }
 
-  //* setting up timer as soon as player types and r
-  function timerCountDown() {
-    if (gameTime > 0) {
-      gameTime--;
-      domTimer.innerText = gameTime;
-    } else {
-      clearInterval(timerInterval);
-      alert("GGWP, click 'OK' and 'Retry' to play again!");
-      return 0;
+      //* setting up the mistake counter
+      mistake.innerText = mistakeCount;
+
+      //* setting up cpm <- only accurate if timer = 60s
+      let cpm = typedCharactersIndex - mistakeCount;
+      char.innerText = cpm;
+
+      //* calculating accuracy percentage to 2 decimal places
+      let accuracyCal = typedCharactersIndex
+        ? (cpm / typedCharactersIndex) * 100
+        : 0;
+      let accuracyRounded = accuracyCal.toFixed(2);
+      accuracyPercentage.innerText = accuracyRounded + "%";
+
+      //* setting up wpm
+      const wpm = Math.round((cpm / 5 / (totalTime - gameTime)) * 60);
+      if (wpm === Infinity) {
+        words.innerHTML = 0;
+      } else {
+        words.innerHTML = wpm;
+      }
+    }
+
+    //* setting up timer as soon as player types and alerts play at the end of the timer to restart
+    function timerCountDown() {
+      if (gameTime > 0) {
+        gameTime--;
+        domTimer.innerText = gameTime;
+      } else {
+        clearInterval(timerInterval);
+        alert("GGWP");
+        return 0;
+      }
     }
   }
 
   chooseRandomExcerpt();
   browserInputField.addEventListener("input", playerTyping);
-  // timerCountDown();
 }
 
 function focusToInput() {
