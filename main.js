@@ -49,6 +49,9 @@ function main() {
     //* replacing text in html to joinedSpanWrappedExcerpt
     browserTextField.innerHTML = joinedSpanWrappedExcerpt;
 
+    //* highlights first letter of excerpt
+    browserTextField.querySelectorAll("span")[0].classList.add("current");
+
     //* get the total number of chars in the excerpt for calculation use later
     numOfChars = spanWrappedCharacters.length;
     return numOfChars;
@@ -85,56 +88,63 @@ function main() {
       return 0;
     }
 
-    //* if typed character is same as text character, add 'correct' class to span. otherwise,
-    //* add 'wrong' class to span and increase mistake counter by 1
-    if (
-      typedInput[typedCharactersIndex] ===
-      textCharacters[typedCharactersIndex].textContent
-    ) {
-      currentSpan.classList.add("correct");
-      typedCharactersIndex++;
-    } else {
-      currentSpan.classList.add("wrong");
-      typedCharactersIndex++;
-      mistakeCount++;
+    //* game is playable if enough time and not at end of excerpt
+    if (gameTime > 0 && typedCharactersIndex < textCharacters.length) {
+      //* if typed character is same as text character, add 'correct' class to span. otherwise,
+      //* add 'wrong' class to span and increase mistake counter by 1
+      if (
+        typedInput[typedCharactersIndex] ===
+        textCharacters[typedCharactersIndex].textContent
+      ) {
+        currentSpan.classList.add("correct");
+        typedCharactersIndex++;
+      } else {
+        currentSpan.classList.add("wrong");
+        typedCharactersIndex++;
+        mistakeCount++;
+      }
+
+      //* making a 'current letter' indicator
+      currentSpan.classList.remove("current");
+
+      //* check to see if nextSpan exist, if true, add "current" to classList
+      if (nextSpan) {
+        nextSpan.classList.add("current");
+      }
+
+      //* setting up the mistake counter
+      mistake.innerText = mistakeCount;
+
+      //* setting up cpm <- only accurate if timer = 60s
+      let cpm = typedCharactersIndex - mistakeCount;
+      char.innerText = cpm;
+
+      //* calculating accuracy percentage to 2 decimal places
+      let accuracyCal = typedCharactersIndex
+        ? (cpm / typedCharactersIndex) * 100
+        : 0;
+      let accuracyRounded = accuracyCal.toFixed(2);
+      accuracyPercentage.innerText = accuracyRounded + "%";
+
+      //* setting up wpm
+      const wpm = Math.round((cpm / 5 / (totalTime - gameTime)) * 60);
+      if (wpm === Infinity) {
+        words.innerHTML = 0;
+      } else {
+        words.innerHTML = wpm;
+      }
     }
 
-    //* making a 'current letter' indicator
-    currentSpan.classList.remove("current");
-
-    //* check to see if nextSpan exist, if true, add "current" to classList
-    if (nextSpan) {
-      nextSpan.classList.add("current");
-    }
-
-    //* setting up the mistake counter
-    mistake.innerText = mistakeCount;
-
-    //* setting up cpm <- only accurate if timer = 60s
-    let cpm = typedCharactersIndex - mistakeCount;
-    char.innerText = cpm;
-
-    //* calculating accuracy percentage to 2 decimal places
-    let accuracyCal = typedCharactersIndex
-      ? (cpm / typedCharactersIndex) * 100
-      : 0;
-    let accuracyRounded = accuracyCal.toFixed(2);
-    accuracyPercentage.innerText = accuracyRounded + "%";
-
-    //* setting up wpm
-    const wpm = Math.round((cpm / 5 / (totalTime - gameTime)) * 60);
-    words.innerHTML = wpm;
-  }
-
-  //* setting up timer as soon as player types and alerts play at the end of the timer to restart
-  function timerCountDown() {
-    if (gameTime > 0) {
-      gameTime--;
-      domTimer.innerText = gameTime;
-    } else {
-      clearInterval(timerInterval);
-      alert("GGWP, click 'OK' and 'Retry' to play again!");
-      return 0;
+    //* setting up timer as soon as player types and alerts play at the end of the timer to restart
+    function timerCountDown() {
+      if (gameTime > 0) {
+        gameTime--;
+        domTimer.innerText = gameTime;
+      } else {
+        clearInterval(timerInterval);
+        alert("GGWP");
+        return 0;
+      }
     }
   }
 
