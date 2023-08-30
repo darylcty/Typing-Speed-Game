@@ -21,9 +21,8 @@ const excerpts = [
   "The villagers of Little Hangleton still called it 'the Riddle House,' even though it had been many years since the Riddle family had lived there. It stood on a hill overlooking the village, some of its windows boarded, tiles missing from its roof, and ivy spreading unchecked over its face. Once a fine-looking manor, and easily the largest and grandest building for miles around, the Riddle House was now damp, derelict, and unoccupied.",
 ];
 
-let typedCharactersIndex = 0;
-
 function main() {
+  let typedCharactersIndex = 0;
   let numOfChars;
   let mistakeCount = 0;
   let gameTime = 60;
@@ -81,6 +80,11 @@ function main() {
     //!     mistakeCount--;
     //!   } else
 
+    //* check if player is at the last character of excerpt
+    if (typedCharactersIndex >= textCharacters.length) {
+      return 0;
+    }
+
     //* if typed character is same as text character, add 'correct' class to span. otherwise,
     //* add 'wrong' class to span and increase mistake counter by 1
     if (
@@ -97,7 +101,11 @@ function main() {
 
     //* making a 'current letter' indicator
     currentSpan.classList.remove("current");
-    nextSpan.classList.add("current");
+
+    //* check to see if nextSpan exist, if true, add "current" to classList
+    if (nextSpan) {
+      nextSpan.classList.add("current");
+    }
 
     //* setting up the mistake counter
     mistake.innerText = mistakeCount;
@@ -107,7 +115,9 @@ function main() {
     char.innerText = cpm;
 
     //* calculating accuracy percentage to 2 decimal places
-    let accuracyCal = (cpm / typedCharactersIndex) * 100;
+    let accuracyCal = typedCharactersIndex
+      ? (cpm / typedCharactersIndex) * 100
+      : 0;
     let accuracyRounded = accuracyCal.toFixed(2);
     accuracyPercentage.innerText = accuracyRounded + "%";
 
@@ -130,7 +140,6 @@ function main() {
 
   chooseRandomExcerpt();
   browserInputField.addEventListener("input", playerTyping);
-  // timerCountDown();
 }
 
 function focusToInput() {
