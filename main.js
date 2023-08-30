@@ -77,7 +77,7 @@ function main() {
 
     //* check if player is at the last character of excerpt
     if (typedCharactersIndex >= textCharacters.length) {
-      return 0;
+      return;
     }
 
     //* game is playable if enough time and not at end of excerpt
@@ -134,7 +134,9 @@ function main() {
         domTimer.innerText = gameTime;
       } else {
         clearInterval(timerInterval);
-        alert("GGWP");
+        alert(
+          "Game Over! An average adult speed is 40 WPM, 200 CPM, 8 Mistakes per 100 Words or 92%. How did you fare?"
+        );
         return 0;
       }
     }
