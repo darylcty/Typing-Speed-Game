@@ -1,5 +1,3 @@
-// import "./style.css";
-
 //* declaring dom variables
 const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
