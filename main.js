@@ -1,9 +1,6 @@
-// import "./style.css";
-
 //* declaring dom variables
 const browserTextField = document.querySelector(".text-field p");
 const browserInputField = document.querySelector("#input-field");
-//! const backspace = document.getElementById("playerBackSpace");
 const mistake = document.querySelector("#mistakeCounter");
 const acc = document.querySelector("#accuracyPercentage");
 const domTimer = document.querySelector("#countDown");
@@ -40,7 +37,7 @@ function main() {
     const excerptSelected = excerpts[randomExcerptIndex];
 
     //* split excerpt string into individual characters
-    indiChar = excerptSelected.split("");
+    const indiChar = excerptSelected.split("");
 
     //* add span tags to each individual character using `template literals`, used later to compare input & text
     const spanWrappedCharacters = indiChar.map(
